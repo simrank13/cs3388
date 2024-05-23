@@ -18,3 +18,6 @@ If using codeblocks, build and run to compile or enter this command (while in th
 
 ## Linked House Navigator
 This project is a C++ and OpenGL implementation of a textured triangle mesh renderer with camera control, aiming to familiarize users with working with triangular meshes and manipulating the camera in world space. The program allows users to load triangle mesh data and textures from files, render them with VBOs and VAOs, and explore the rendered world by moving the camera using arrow keys. The key features include manipulation of the view matrix for camera movement, loading triangle mesh data and textures, and rendering textured triangle meshes. Users can navigate the rendered world by moving the camera around in the environment
+
+Download the zipped folder and extract it (without changing folder's structure). If useing codeblocks, build and run to compile. However, if using a different c++ compiler then run this command (make sure you are in the same folder as a4.cpp): g++ -g a4.cpp -o a4 -lGL -lglfw -lGLEW (or g++ a4.cpp -lGLEW -lglfw -lGL)                                                                                           
+
