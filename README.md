@@ -19,5 +19,43 @@ If using codeblocks, build and run to compile or enter this command (while in th
 ## Linked House Navigator
 This project is a C++ and OpenGL implementation of a textured triangle mesh renderer with camera control, aiming to familiarize users with working with triangular meshes and manipulating the camera in world space. The program allows users to load triangle mesh data and textures from files, render them with VBOs and VAOs, and explore the rendered world by moving the camera using arrow keys. The key features include manipulation of the view matrix for camera movement, loading triangle mesh data and textures, and rendering textured triangle meshes. Users can navigate the rendered world by moving the camera around in the environment
 
-Download the zipped folder and extract it (without changing folder's structure). If useing codeblocks, build and run to compile. However, if using a different c++ compiler then run this command (make sure you are in the same folder as a4.cpp): g++ -g a4.cpp -o a4 -lGL -lglfw -lGLEW (or g++ a4.cpp -lGLEW -lglfw -lGL)                                                                                           
+Download the zipped folder and extract it (without changing folder's structure). If useing codeblocks, build and run to compile. However, if using a different c++ compiler then run this command (make sure you are in the same folder as a4.cpp): g++ -g a4.cpp -o a4 -lGL -lglfw -lGLEW (or g++ a4.cpp -lGLEW -lglfw -lGL) 
+
+## OpenGL Marching Cubes and Phong Shading/ Mesh Generation
+This is a C++ project that uses OpenGL, GLFW, GLEW, & GLM and the marching cubes algorithm to create a 3D representation of a mathematical function, and applies Phong shading to render the object with realistic lighting.
+
+
+## Build Instructions
+To build this project, you will need a C++ compiler. Follow these steps:
+
+Clone the repository. Navigate to the project directory and run `make` and run `./a.out [screen_width] [screen_height] [stepsize] [min] [max]`
+
+screen_width: Width of the window, default is 1400.
+screen_height: Height of the window, default is 900.
+stepsize: The step size for the marching cubes algorithm, default is 0.05.
+min: The minimum value for the coordinate axes, default is -5.
+max: The maximum value for the coordinate axes, default is 5.
+For example, run the program with default parameters:
+
+`./a.out`
+
+Or with custom parameters:
+
+`./a.out 800 600 0.1 -3 3`
+
+### Camera Controls
+- Up Arrow: Zoom the camera closer to the origin.
+- Down Arrow: Zoom the camera away from the origin.
+- Mouse movement: Rotate the camera.
+
+### Project Structure
+- meshgen.cpp: The main file of the project, which initializes GLFW and GLEW, sets up the window and OpenGL context, and runs the main loop.
+- Camera: Class that controls the users mouse movement to rotate the scene.
+- shaders.hpp: Header file containing utility functions for loading and compiling shaders.
+- TriTable.hpp: Header file containing the triangle lookup table for the marching cubes algorithm.
+- verticeshader.vert: Vertex shader file for Phong shading.
+- fragmentshader.frag: Fragment shader file for Phong shading.
+- 
+### Features
+Implements the marching cubes algorithm to generate 3D geometry from a mathematical function. Applies Phong shading to render the object with realistic lighting. Exports the generated geometry as a PLY file for further use. Provides a customizable camera for viewing the scene. Supports user-defined window size, step size, and coordinate range.
 
