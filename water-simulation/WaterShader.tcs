@@ -1,0 +1,40 @@
+#version 400
+
+// Specify output layout for tessellation control shader
+layout(vertices = 4) out;
+
+// Define inputs from vertex shader
+in VS_OUT {
+    vec3 position;
+    vec3 normal;
+    vec2 uv;
+    // Add other inputs you require
+} tcs_in[];
+
+// Define outputs to tessellation evaluation shader
+out TCS_OUT {
+    vec3 position;
+    vec3 normal;
+    vec2 uv;
+    // Add other outputs you require
+} tcs_out[];
+
+// Uniform variables for controlling tessellation levels
+uniform float outerTess;
+uniform float innerTess;
+
+void main() {
+    // Pass through the input to the output
+    tcs_out[gl_InvocationID].position = tcs_in[gl_InvocationID].position;
+    tcs_out[gl_InvocationID].normal = tcs_in[gl_InvocationID].normal;
+    tcs_out[gl_InvocationID].uv = tcs_in[gl_InvocationID].uv;
+    // Pass any additional attributes you require
+
+    // Set the level of tessellation for outer and inner tessellation levels
+    gl_TessLevelOuter[0] = outerTess;
+    gl_TessLevelOuter[1] = outerTess;
+    gl_TessLevelOuter[2] = outerTess;
+    gl_TessLevelOuter[3] = outerTess;
+    gl_TessLevelInner[0] = innerTess;
+    gl_TessLevelInner[1] = innerTess;
+}

@@ -1,0 +1,96 @@
+#version 400
+// Input triangle
+layout(triangles) in;
+
+// Input eye and light direction and UV coordinate
+in vec3 EyeDirection_cameraspace[];
+in vec3 LightDirection_cameraspace[];
+in vec2 uv[];
+
+// Output triangle strip
+layout(triangle_strip, max_vertices = 3) out;
+
+// Output variables
+out vec3 gs_Normal_cameraspace;
+out vec3 gs_EyeDirection_cameraspace;
+out vec3 gs_LightDirection_cameraspace;
+out vec2 gs_uv;
+
+// Uniform variables
+uniform float time;
+uniform mat4 MVP;
+uniform mat4 V;
+uniform mat4 M;
+uniform sampler2D heightTex;
+uniform float heights;
+uniform float proximity;
+
+// Function to calculate triangle normal
+vec3 GetNormal(vec4 p1, vec4 p2, vec4 p3) {
+    vec3 a = p1.xyz - p2.xyz;
+    vec3 b = p3.xyz - p2.xyz;
+    return normalize(cross(a, b));
+}
+
+// Gerstner wave function
+vec3 Gerstner(vec3 worldpos, float w, float A, float phi, float Q, vec2 D, int N) {
+    float wxzDot = dot(w * vec2(worldpos.x, worldpos.z), D);
+    
+    float sinTerm = sin(wxzDot + phi * time);
+    float cosTerm = cos(wxzDot + phi * time);
+    
+
+    vec3 displacement;
+    displacement.x = Q * A * D.x * cosTerm;
+    displacement.y = A * sinTerm;
+    displacement.z = Q * A * D.y * cosTerm;
+
+    return displacement;
+}
+
+
+void main() {
+
+    // Store positions for a vertex
+    vec4 position_tes;
+    vec4 pos[3];
+
+    // Displace the vertices
+
+	for(int i = 0; i < gl_in.length(); ++i) {
+
+        // implement the height and other things
+
+        position_tes = gl_in[i].gl_Position;
+        pos[i] = position_tes;
+
+        pos[i].y += texture(heightTex, uv[i] * proximity).r * heights;
+
+        pos[i].xyz += Gerstner(position_tes.xyz, 4, 0.08, 1.1, 0.75, vec2(0.3, 0.6), 4);
+        pos[i].xyz += Gerstner(position_tes.xyz, 2, 0.05, 1.1, 0.75, vec2(0.2, 0.866), 4);
+        pos[i].xyz += Gerstner(position_tes.xyz, 0.6, 0.2, 0.4, 0.1, vec2(0.3, 0.7), 4);
+        pos[i].xyz += Gerstner(position_tes.xyz, 0.9, 0.15, 0.4, 0.1, vec2(0.8, 0.1), 4);
+
+
+	}
+
+    // calculate new normals
+	vec3 normal = GetNormal(pos[0], pos[1], pos[2]);
+
+    // Emit vertices with interpolated attributes
+	for(int i = 0; i < gl_in.length(); ++i) {
+        gl_Position = MVP * pos[i];
+
+
+        gs_Normal_cameraspace = (V * M * vec4(normal, 0)).xyz;
+        gs_EyeDirection_cameraspace = EyeDirection_cameraspace[i];
+        gs_LightDirection_cameraspace = LightDirection_cameraspace[i];
+        gs_uv = uv[i];
+
+		EmitVertex();
+
+	}
+
+	EndPrimitive();
+
+}

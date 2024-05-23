@@ -1,0 +1,42 @@
+#version 400
+
+// Input vertex data, different for all executions of this shader.
+layout(location = 0) in vec3 vertexPosition_modelspace;
+layout(location = 1) in vec3 vertexNormal_modelspace;
+
+// Uniform values that stay constant for the whole mesh.
+uniform mat4 M; // Model matrix
+uniform mat4 V; // View matrix
+uniform vec3 LightPosition_worldspace; // Light position in world space
+uniform vec3 CameraPosition_worldspace; // Camera (eye) position in world space
+uniform float time; // Current time for animating the UVs
+uniform vec2 texOffset; // Offset for the UVs
+uniform float texScale; // Scale for the UVs
+
+// Output data, will be interpolated for each fragment.
+out vec3 vertexPosition_cameraspace;
+out vec3 normal_cameraspace;
+out vec2 uv_vs;
+
+void main() {
+    // Model matrix is identity, so position in model space is the same as world space.
+    mat4 M = mat4(1.0f);
+
+    // Calculate UV coordinates based on position and time.
+    uv_vs = (vertexPosition_modelspace.xz + texOffset + (time*0.08))/texScale;
+
+    // Pass through the vertex position unchanged.
+    gl_Position = vec4(vertexPosition_modelspace,1);
+
+    // Calculate camera-space position for lighting calculations.
+    vertexPosition_cameraspace = ( V * M * vec4(vertexPosition_modelspace,1)).xyz;
+    // The eye vector is pointing towards the origin (assumed to be the position of the camera).
+    vec3 eye_vs = vec3(0,0,0) - vertexPosition_cameraspace;
+
+    // Calculate light direction in camera space.
+    vec3 LightPosition_cameraspace = ( V * vec4(LightPosition_worldspace,1)).xyz;
+    vec3 light_vs = LightPosition_cameraspace + eye_vs;
+
+    // Transform normal to camera space.
+    normal_cameraspace = ( V * M * vec4(vertexNormal_modelspace,0)).xyz;
+}

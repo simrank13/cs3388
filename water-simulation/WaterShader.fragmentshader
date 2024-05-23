@@ -1,0 +1,41 @@
+#version 400
+
+// Interpolated values from the vertex shaders
+in vec3 Normal_cameraspace; // Interpolated normal for this fragment
+in vec3 LightDirection_cameraspace; // Light direction for this fragment
+in vec3 EyeDirection_cameraspace; // Eye direction for this fragment
+in vec2 UV; // Interpolated UV coordinates for texture mapping
+
+// Ouput data
+out vec4 color_out;
+
+// Uniforms
+uniform sampler2D waterTexture; // The texture sampler
+uniform vec3 LightPosition_worldspace; // Light position in world space
+uniform vec4 modelcolor; // Base color of the model
+
+void main() {
+    // Normalize the incoming N, L, E vectors
+    vec3 N = normalize(Normal_cameraspace);
+    vec3 L = normalize(LightDirection_cameraspace);
+    vec3 E = normalize(EyeDirection_cameraspace);
+
+    // Calculate the Ambient color
+    vec4 AmbientColor = vec4(0.2, 0.2, 0.2, 1.0) * modelcolor;
+
+    // Fetch the diffuse color from the texture
+    vec4 DiffuseColor = texture(waterTexture, UV);
+
+    // Calculate the Diffuse lighting
+    float cosTheta = clamp(dot(N, L), 0, 1);
+
+    // Calculate the Specular lighting
+    vec3 R = reflect(-L, N);
+    float cosAlpha = clamp(dot(E, R), 0, 1);
+    vec4 SpecularColor = vec4(1.0, 1.0, 1.0, 1.0) * pow(cosAlpha, 8);
+
+    // Combine the lighting components to compute the final color
+    color_out = AmbientColor + DiffuseColor * cosTheta + SpecularColor;
+    // Ensure the alpha channel is correct
+    color_out.a = modelcolor.a;
+}
