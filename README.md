@@ -100,9 +100,7 @@ A set of sample assets (boat.ply, boat.bmp, head.ply, head.bmp, eyes.ply, and ey
 - Dynamic camera control for navigating the scene
 - Realistic lighting and shading
 ### Code Overview
-- The main components of the project are:
-
-- main(): Initializes OpenGL, GLFW, and GLEW, creates the window, sets up shaders, loads assets, and enters the main loop.
+- A6-Water: Initializes OpenGL, GLFW, and GLEW, creates the window, sets up shaders, loads assets, and enters the main loop.
 - Camera: A class that handles the different viewing angles for the user, updating based on user input.
 - PlaneMesh: A class that handles the creation, rendering, and updating of the plane mesh water surface.
 - TexturedMesh: A class that handles the creation, rendering, and updating of 3D objects (boat, head, and eyes).
