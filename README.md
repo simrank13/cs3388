@@ -55,7 +55,7 @@ Or with custom parameters:
 - TriTable.hpp: Header file containing the triangle lookup table for the marching cubes algorithm.
 - verticeshader.vert: Vertex shader file for Phong shading.
 - fragmentshader.frag: Fragment shader file for Phong shading.
-- 
+  
 ### Features
 Implements the marching cubes algorithm to generate 3D geometry from a mathematical function. Applies Phong shading to render the object with realistic lighting. Exports the generated geometry as a PLY file for further use. Provides a customizable camera for viewing the scene. Supports user-defined window size, step size, and coordinate range.
 
