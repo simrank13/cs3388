@@ -68,10 +68,7 @@ To build and run the project, you will need:
 
 - C++ compiler with support for C++11
 - OpenGL 3.3 or higher
-- GLFW
-- GLEW
-- GLM
-- BMapLoader.hpp
+- GLFW, GLEW, and GLM
 - PlaneMesh.hpp
 - LoadBitmap.cpp
 
