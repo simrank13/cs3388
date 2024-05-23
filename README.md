@@ -25,7 +25,7 @@ Download the zipped folder and extract it (without changing folder's structure).
 This is a C++ project that uses OpenGL, GLFW, GLEW, & GLM and the marching cubes algorithm to create a 3D representation of a mathematical function, and applies Phong shading to render the object with realistic lighting.
 
 
-## Build Instructions
+### Build Instructions
 To build this project, you will need a C++ compiler. Follow these steps:
 
 Clone the repository. Navigate to the project directory and run `make` and run `./a.out [screen_width] [screen_height] [stepsize] [min] [max]`
